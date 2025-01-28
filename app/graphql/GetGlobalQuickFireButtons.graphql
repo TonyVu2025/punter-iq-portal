@@ -1,0 +1,10 @@
+query GetGlobalQuickFireButtons {
+  global_quick_fire_buttonsCollection {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+query GetFormGuideOverview($startDate: Datetime!, $endDate: Datetime!) {
+  meetingsCollection(
+    filter: {
+      tab_indicator: { eq: "T" }
+      date: { gte: $startDate, lte: $endDate }
+    }
+  ) {
+    edges {
+      node {
+        id
+        date
+        tracks {
+          name
+          state
+        }
+        racesCollection(orderBy: { race_number: AscNullsLast }) {
+          edges {
+            node {
+              id
+              status
+              name
+              race_number
+              top_4_numbers
+              oddsCollection {
+                edges {
+                  node {
+                    win_fixed
+                    place_fixed
+                    source
+                    competitor_number
+                  }
+                }
+              }
+              competitorsCollection(
+                first: 4
+                orderBy: { final_position: AscNullsLast }
+                filter: { final_position: { neq: 0 } }
+              ) {
+                edges {
+                  node {
+                    competitor_number
+                    horse_id
+                    margin
+                    weight_total
+                    final_position
+                    horses {
+                      name
+                    }
+                  }
+                }
+              }
+              start_time
+            }
+          }
+        }
+      }
+    }
+  }
+}

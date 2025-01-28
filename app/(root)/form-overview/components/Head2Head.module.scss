@@ -1,0 +1,57 @@
+.table {
+  @apply w-full border-b border-Subtle_dark text-sm;
+
+  th {
+    @apply text-center bg-Subtle_dark_2 px-2 py-2 text-left font-normal text-Font_SubColor_1 app-text-body-medium;
+  }
+
+  td {
+    @apply px-3 py-2;
+  }
+}
+
+.table thead tr:nth-child(2) th {
+  @apply border-t border-[#D4DEE4] bg-SubDark_Color_3;
+}
+
+.childTable {
+  @apply w-full;
+
+  th,
+  td {
+    &:first-child {
+      @apply w-10;
+    }
+  }
+
+  td {
+    @apply bg-white;
+
+    &:nth-child(2) {
+      @apply border-l;
+    }
+
+    &:not(:first-child) {
+      @apply border-b;
+    }
+  }
+
+  tr:last-child td {
+    @apply border-b-0;
+  }
+
+  &.even {
+    @apply bg-Font_SubColor_1;
+  }
+
+  .evenRace {
+    td:not(:first-child),
+    th:not(:first-child) {
+      background-color: theme("colors.Subtle_dark_2") !important;
+    }
+  }
+}
+
+.accordionRowActive > td {
+  background-color: theme("colors.Subtle_dark") !important;
+}

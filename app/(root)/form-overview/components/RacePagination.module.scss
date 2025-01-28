@@ -1,0 +1,7 @@
+.pagination {
+  @apply h-10 cursor-pointer border-r px-4 leading-10 text-Font_SubColor_1 hover:text-mainFont lg:app-text-h4;
+}
+
+.active {
+  @apply text-mainFont;
+}

@@ -1,0 +1,7 @@
+mutation RemoveBlackbookSubscription($subscriptionId: BigInt) {
+  deleteFromblack_book_runner_subscriptionsCollection(
+    filter: { id: { eq: $subscriptionId } }
+  ) {
+    affectedCount
+  }
+}

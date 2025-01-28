@@ -1,0 +1,60 @@
+query GetFormGuideRaces(
+  $startDate: Datetime
+  $endDate: Datetime
+  $offset: Int
+) {
+  racesCollection(
+    filter: { start_time: { gte: $startDate, lte: $endDate } }
+    orderBy: { start_time: AscNullsLast }
+    offset: $offset
+  ) {
+    edges {
+      node {
+        id
+        status
+        distance
+        name
+        race_number
+        tracks {
+          id
+          name
+          state
+        }
+        top_4_numbers
+        oddsCollection {
+          edges {
+            node {
+              win_fixed
+              place_fixed
+              source
+              competitor_number
+            }
+          }
+        }
+        competitorsCollection {
+          edges {
+            node {
+              barrier
+              competitor_number
+              horse_id
+              margin
+              weight_total
+              horses {
+                name
+              }
+              jockeys {
+                full_name
+              }
+              trainers {
+                full_name
+                id
+              }
+              final_position
+            }
+          }
+        }
+        start_time
+      }
+    }
+  }
+}

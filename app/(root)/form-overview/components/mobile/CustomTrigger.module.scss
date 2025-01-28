@@ -1,0 +1,17 @@
+.trigger {
+  @apply flex-1 py-3 font-bold px-3 text-mainFont data-[state=active]:bg-action_ll1 data-[state=active]:text-white rounded;
+}
+
+.trigger ~ .trigger {
+  @apply relative;
+
+  &:nth-child(2) {
+    @apply ml-1;
+  }
+
+  &:before {
+    content: "";
+
+    @apply absolute right-full top-1/2 -translate-y-1/2 w-[1px] h-[50%] bg-[#DAD8D8];
+  }
+}

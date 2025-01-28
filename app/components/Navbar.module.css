@@ -1,0 +1,18 @@
+.navbar {
+    @apply px-2 py-3 items-stretch h-full justify-between max-s1100:flex s1100:flex s1100:items-center s1100:justify-between;
+    @apply lg:container lg:min-h-0;
+    background-repeat: no-repeat;
+    background-position: 150px 0;
+}
+
+@media screen(md) {
+    .navbar {
+        background-position: 100% 0;
+    }
+}
+
+@media screen(lg) {
+    .navbar {
+        background-image: none;
+    }
+}

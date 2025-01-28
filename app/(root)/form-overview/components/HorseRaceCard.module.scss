@@ -1,0 +1,27 @@
+.table {
+  @apply w-full border-collapse text-sm;
+
+  > thead > tr > th {
+    @apply bg-Subtle_dark_2 px-2 py-2 text-center font-normal text-Font_SubColor_1 app-text-body-medium;
+  }
+
+  > tbody > tr > td {
+    @apply border-b border-Subtle_dark px-3 py-4;
+  }
+}
+
+.table thead tr:nth-child(2) th {
+  @apply border-t border-[#D4DEE4] bg-SubDark_Color_3;
+}
+
+.dataTable {
+  @apply w-full border-l border-Subtle_dark text-sm;
+}
+
+.dataTable > tbody > tr {
+  @apply border-y border-Subtle_dark;
+}
+
+.dataTable > tbody > tr > td {
+  @apply border-Subtle_dark px-3 py-3 align-top lg:py-7;
+}

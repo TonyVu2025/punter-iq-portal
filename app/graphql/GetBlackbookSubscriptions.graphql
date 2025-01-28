@@ -1,0 +1,22 @@
+query GetBlackbookSubscriptions($user_id: UUID!) {
+  black_book_runner_subscriptionsCollection(
+    filter: { user_id: { eq: $user_id } }
+  ) {
+    edges {
+      node {
+        id
+        horses {
+          name
+          age
+          owners
+          wins
+          seconds
+          thirds
+          races
+          sire
+          dam
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+.statsTable {
+  @apply w-full;
+}
+
+.statsTable th,
+.statsTable td {
+  @apply px-3 py-2 text-left font-normal;
+}
+
+.statsTable td:first-child {
+  @apply text-Font_SubColor_1 lg:pl-20;
+}
+
+.statsTable thead {
+  @apply border-b;
+}

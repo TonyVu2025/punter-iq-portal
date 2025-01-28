@@ -1,0 +1,12 @@
+.table {
+  @apply w-full text-left text-sm text-Sub_Dark_color;
+
+  th {
+    @apply text-Font_SubColor_1 font-normal text-left;
+  }
+
+  th,
+  td {
+    @apply text-sm px-3
+  }
+}

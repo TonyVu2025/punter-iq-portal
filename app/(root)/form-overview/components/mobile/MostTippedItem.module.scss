@@ -1,0 +1,27 @@
+.accordionIcon {
+  @apply box-content inline-block self-center rounded-full bg-action_ll1 p-1 text-xs text-white;
+}
+
+.disabled {
+  @apply line-through;
+
+  > div > * {
+    @apply opacity-60;
+  }
+}
+
+.root {
+  @apply mt-2;
+}
+
+.accordionItem {
+  @apply pb-1;
+}
+
+.root :global([data-state="closed"]) .accordionIcon {
+  @apply bg-white text-mainFont;
+}
+
+.formTabTrigger {
+  @apply relative flex-1 bg-SubDark_Color_3 font-bold text-mainFont data-[state=active]:bg-action_ll1 data-[state=active]:text-white;
+}

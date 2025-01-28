@@ -1,0 +1,38 @@
+.loader11 span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 4px;
+  position: relative;
+  animation: loader11 0.8s ease-in-out alternate infinite;
+  animation-delay: 0.32s;
+  background-color: currentColor;
+}
+.loader11::after,
+.loader11::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  animation: loader11 0.8s ease-in-out alternate infinite;
+  background-color: currentColor;
+}
+.loader11::before {
+  animation-delay: 0.16s;
+}
+.loader11::after {
+  animation-delay: 0.48s;
+}
+
+@keyframes loader11 {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}

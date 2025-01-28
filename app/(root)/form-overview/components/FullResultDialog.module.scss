@@ -1,0 +1,20 @@
+.childTable {
+  @apply border-x w-full h-full;
+
+  th,
+  td {
+    @apply border-y text-nowrap py-0.5 px-2;
+  }
+
+  th {
+    @apply text-center font-normal border-t-0;
+  }
+
+  td {
+    @apply text-left app-text-body-medium text-nowrap;
+  }
+
+  tr:last-child td {
+    @apply border-b-0;
+  }
+}

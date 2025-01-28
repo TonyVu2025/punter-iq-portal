@@ -1,0 +1,3 @@
+interface SocialFeedHeaderProps {
+  wrapperClassName?: string;
+}
