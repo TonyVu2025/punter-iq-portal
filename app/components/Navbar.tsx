@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormGuidesDrawer } from "@/components/FormGuidesDrawer";
 import Image from "next/image";
 import useMainStore from "@/stores/mainStore";
@@ -102,25 +102,26 @@ const Navbar = () => {
           <DesktopNav />
 
           {/* Mobile only */}
-          <div className="flex items-center lg:hidden">
-            <div className="pr-3 text-[12px]">
-              <span className="text-2xs">Balance</span>
-              <p>VC199.99</p>
+          <div className="flex h-[40px] items-stretch gap-[5px] lg:hidden">
+            <div className="flex w-[80px] flex-col justify-center rounded-lg border px-3 text-[12px]">
+              <span className="text-2xs text-[#657786]">Balance</span>
+              <p className="text-[#283036]">VC199.99</p>
             </div>
 
-            <div className="flex whitespace-nowrap text-2xs">
+            <div className="flex w-[126px] whitespace-nowrap text-2xs">
               <Link
                 href="#"
-                className="inline-block rounded-l-lg bg-action_ll1 px-3 pb-1.5 pt-1.5 text-center text-white"
+                className="flex flex-col justify-center rounded-l-lg bg-action_ll1 px-3 text-center text-white"
               >
                 Pending
                 <br /> <strong className="text-xs">15</strong>
               </Link>
               <Link
                 href="#"
-                className="inline-block rounded-r-lg border border-SubDark_Color_3 px-3 pb-1.5 pt-1.5 text-center"
+                className="flex flex-col justify-center rounded-r-lg border border-SubDark_Color_3 px-3 text-center text-[#657786]"
               >
-                Bet Slip <br /> <strong className="text-xs">25</strong>
+                Bet Slip <br />{" "}
+                <strong className="text-xs text-[#283036]">25</strong>
               </Link>
             </div>
           </div>
@@ -133,18 +134,37 @@ const Navbar = () => {
 };
 
 const MainNav = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    updateMedia();
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  }, []);
   const isDrawerOpen = useMainStore((state) => state.isDrawerOpen);
 
   return (
     <div className="lg:mr-4 lg:flex">
       <div className="flex h-full">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <Image
-            src="/img/last-leg-logo.svg"
-            alt="LastLeg Logo"
-            width={130}
-            height={40}
-          />
+          {isMobile ? (
+            <Image
+              src="/img/punter-iq.png"
+              alt="LastLeg Logo"
+              width={130}
+              height={40}
+            />
+          ) : (
+            <Image
+              src="/img/last-leg-logo.svg"
+              alt="LastLeg Logo"
+              width={130}
+              height={40}
+            />
+          )}
         </a>
         <div
           className="hidden w-full px-5 md:order-1 md:w-auto lg:flex"

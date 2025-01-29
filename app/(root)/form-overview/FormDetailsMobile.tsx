@@ -7,7 +7,11 @@ export const FormDetailsMobile = () => {
   return (
     <>
       <div className="px-4">
-        <img alt="" src="/img/sample-ads-4-m.jpg" className="mx-auto mt-9" />
+        <img
+          alt=""
+          src="/img/sample-ads-3.jpg"
+          className="mx-auto mt-9 h-[70px]"
+        />
 
         <RaceDetailCard />
 

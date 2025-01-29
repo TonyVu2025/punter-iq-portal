@@ -3,15 +3,12 @@
 import {
   CloudSnowIcon,
   ThermometerIcon,
-  TrophyIcon,
   WindIcon,
 } from "lucide-react";
 import { TrackIcon } from "./components/TrackIcon";
-import { cn } from "@/lib/utils";
 import { StatsTable } from "./components/StatsTable";
 import { BlackbookCard } from "@/components/BlackbookCard";
 import { Chip } from "./components/Chip";
-import { getOrdinalNum } from "@/utils/getOrdinalNum";
 import { HideOnMobile } from "@/components/ui/HideOnMobile";
 import { MobileOnly } from "@/components/MobileOnly";
 import { FormDetailsMobile } from "./FormDetailsMobile";
@@ -122,15 +119,18 @@ const FormOverviewDesktop = () => {
       </Wrapper>
 
       <div className="mt-5 border-y">
-        <Wrapper className="flex overflow-auto px-0">
-          <RacePagination>All</RacePagination>
-          <RacePagination>1</RacePagination>
-          <RacePagination active>2</RacePagination>
-          <RacePagination>3</RacePagination>
-          <RacePagination>4</RacePagination>
-          <RacePagination>5</RacePagination>
-          <RacePagination>6</RacePagination>
-          <RacePagination>7</RacePagination>
+      <Wrapper className="flex items-center overflow-auto px-0">
+          <RacePagination className="items-center text-[20px] font-[800]">
+            All
+          </RacePagination>
+          <RacePagination raceNumber="1" results={[8, 2, 3]} />
+          <RacePagination raceNumber="2" results={[8, 2, 3]} />
+          <RacePagination raceNumber="3" timeUntilRace="52m 15s" active />
+          <RacePagination raceNumber="4" timeUntilRace="52m 15s" />
+          <RacePagination raceNumber="5" timeUntilRace="52m 15s" />
+          <RacePagination raceNumber="6" timeUntilRace="52m 15s" />
+          <RacePagination raceNumber="7" timeUntilRace="52m 15s" />
+          <RacePagination raceNumber="8" timeUntilRace="52m 15s" />
         </Wrapper>
       </div>
 
@@ -202,31 +202,37 @@ const FormOverviewDesktop = () => {
       </div>
 
       <Wrapper>
-        <div className="mt-8">
+      <div className="mt-8">
           {new Array(4).fill(null).map((_, index) => (
             <div
               key={index}
               className="mt-2 flex flex-wrap justify-between rounded-xl bg-white app-text-caption"
             >
               <div className="relative flex flex-auto flex-wrap justify-between gap-3 pr-4 pt-12 lg:pr-12 lg:pt-0">
-                <div
-                  className={cn(
-                    "absolute right-0 top-0 rounded-bl-xl rounded-br-xl px-2 py-2.5 text-white lg:right-auto lg:top-2 lg:rounded-r-full lg:px-4",
-                    index === 0 && "bg-[#F2994A]",
-                    index === 1 && "bg-[#AAB6BF]",
-                    index === 2 && "bg-[#F37023]",
-                    index === 3 && "bg-[#E1E8ED]",
-                  )}
-                >
-                  <TrophyIcon className="inline" />{" "}
-                  <span className="app-text-h6 lg:app-text-h4">
-                    {getOrdinalNum(index + 1)}
-                  </span>
-                </div>
-
-                <div className="flex self-end py-4 pb-4 pl-4 lg:pl-12 lg:pt-10">
+                <div className="flex items-center gap-4 pb-4 pl-[24px]">
+                  <div
+                    className="flex h-[26px] w-[26px] items-center justify-center rounded-2xl text-[10px] leading-[26px] text-white"
+                    style={{
+                      backgroundColor:
+                        index === 0
+                          ? "#F37023"
+                          : index === 1
+                            ? "#0091CD"
+                            : index === 2
+                              ? "#F5A06E"
+                              : "#AAB6BF",
+                    }}
+                  >
+                    {index === 0
+                      ? "1st"
+                      : index === 1
+                        ? "2nd"
+                        : index === 2
+                          ? "3rd"
+                          : "4th"}
+                  </div>
                   <img alt="" src="/img/icons/t-shirt-orange.svg" width={43} />
-                  <div className="-mt-0.5 pl-4">
+                  <div className="-mt-0.5">
                     <strong className="app-text-h4">
                       8. Barney’s Blaze - 3
                     </strong>
@@ -236,7 +242,7 @@ const FormOverviewDesktop = () => {
                   </div>
                 </div>
 
-                <div className="self-end pb-4 pl-4 lg:pt-10">
+                <div className="items-center pb-4 lg:pt-10">
                   <table>
                     <tbody>
                       <tr>
