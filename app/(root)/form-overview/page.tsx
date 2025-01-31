@@ -40,7 +40,6 @@ import { GetFormGuideOverviewDocument } from "@/gql/graphql";
 import { useClientSupabaseQuery } from "@/hooks/useClientSupabaseQuery";
 import { TripleDotsLoading } from "@/components/ui/TripleDotsLoading";
 import { Calendar } from "@/components/ui/calendar";
-import dayjs from "dayjs";
 
 interface OddsNode {
   source: string;
@@ -144,11 +143,10 @@ const FormOverviewDesktop = () => {
   };
 
   const handleDateSelect = (date: Date) => {
-    const previousDay = dayjs(date).subtract(1, 'day').toDate();
-    setSelectedDate(getPunterDayJS(previousDay));
+    // const previousDay = dayjs(date).subtract(1, "day").toDate();
+    setSelectedDate(getPunterDayJS(date));
     setIsCalendarVisible(false); // Hide calendar after selecting a date
   };
-
 
   const { data, isFetching, refetch } = useClientSupabaseQuery(
     ["formGuideOverview"],
@@ -156,7 +154,7 @@ const FormOverviewDesktop = () => {
     {
       startDate: selectedDate.startOf("d").toDate(),
       endDate: selectedDate.endOf("d").toDate(),
-    }
+    },
   );
 
   useEffect(() => {
@@ -168,7 +166,7 @@ const FormOverviewDesktop = () => {
       const firstMeeting = `${data.meetingsCollection.edges[0].node.tracks.name}-${data.meetingsCollection.edges[0].node.tracks.state}`;
       const checkMetting = data.meetingsCollection.edges.find(
         (item) =>
-          `${item.node.tracks.name}-${item.node.tracks.state}` === meeting
+          `${item.node.tracks.name}-${item.node.tracks.state}` === meeting,
       );
       if (!meeting || !checkMetting) {
         setMeeting(firstMeeting);
@@ -176,10 +174,12 @@ const FormOverviewDesktop = () => {
       const selectedMeeting = data.meetingsCollection.edges.find(
         (item) =>
           `${item.node.tracks.name}-${item.node.tracks.state}` ===
-          (meeting || firstMeeting)
+          (meeting || firstMeeting),
       );
       if (selectedMeeting) {
-        const formattedRaces = selectedMeeting.node.racesCollection || { edges: [] };
+        const formattedRaces = selectedMeeting.node.racesCollection || {
+          edges: [],
+        };
         setRacesCollection(formattedRaces);
 
         if (formattedRaces.edges.length > 0) {
@@ -191,23 +191,29 @@ const FormOverviewDesktop = () => {
 
   const getRaceDetails = async (raceID: number) => {
     const raceDetails = await fetchRaceDetails(raceID);
-    
+
     // Format Race Details here if needed before setting state
     setRaceDetail(raceDetails as RaceDetail);
   };
 
   useEffect(() => {
-    if(raceDetail) {
-      const topNumber  = raceDetail?.racesCollection.edges[0]?.node.top_4_numbers || [];
-      const competitors = raceDetail?.racesCollection.edges[0].node.competitors.edges;
-      const topCompetitorDetails = competitors.filter(competitor =>
-        topNumber.includes(competitor.node.competitor_number)
-      ).sort((a, b) =>
-        topNumber.indexOf(a.node.competitor_number) - topNumber.indexOf(b.node.competitor_number)
-      );
+    if (raceDetail) {
+      const topNumber =
+        raceDetail?.racesCollection.edges[0]?.node.top_4_numbers || [];
+      const competitors =
+        raceDetail?.racesCollection.edges[0].node.competitors.edges;
+      const topCompetitorDetails = competitors
+        .filter((competitor) =>
+          topNumber.includes(competitor.node.competitor_number),
+        )
+        .sort(
+          (a, b) =>
+            topNumber.indexOf(a.node.competitor_number) -
+            topNumber.indexOf(b.node.competitor_number),
+        );
       setTop4Competitors(topCompetitorDetails);
     }
-  },[raceDetail])
+  }, [raceDetail]);
   if (isFetching || !data) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -327,7 +333,7 @@ const FormOverviewDesktop = () => {
               key={index}
               onClick={() => getRaceDetails(Number(race.node.id))}
             >
-              <RacePagination raceNumber={race.node.race_number} />
+              <RacePagination results={race.node.top_4_numbers?.slice(0,3)} raceNumber={race.node.race_number} />
             </div>
           ))}
         </Wrapper>
@@ -367,6 +373,9 @@ const FormOverviewDesktop = () => {
                 {new Date(
                   raceDetail?.racesCollection.edges[0]?.node.start_time,
                 ).toLocaleTimeString([], {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
                   hour: "2-digit",
                   minute: "2-digit",
                   second: "2-digit",
@@ -429,10 +438,12 @@ const FormOverviewDesktop = () => {
                   <img alt="" src="/img/icons/t-shirt-orange.svg" width={43} />
                   <div className="-mt-0.5">
                     <strong className="app-text-h4">
-                      {competitor?.node.competitor_number}. Barney’s Blaze - {competitor?.node.barrier}
+                      {competitor?.node.competitor_number}. Barney’s Blaze -{" "}
+                      {competitor?.node.barrier}
                     </strong>
                     <p className="text-Font_SubColor_1 app-text-caption">
-                      {competitor?.node.horses.age}yoG (b) Rubick x Harvest Queen
+                      {competitor?.node.horses.age}yoG (b) Rubick x Harvest
+                      Queen
                     </p>
                   </div>
                 </div>
@@ -454,7 +465,9 @@ const FormOverviewDesktop = () => {
                       </tr>
                       <tr>
                         <td className="pr-3">Weight</td>
-                        <td className="text-Font_SubColor_1">{competitor?.node.weight_total}kg</td>
+                        <td className="text-Font_SubColor_1">
+                          {competitor?.node.weight_total}kg
+                        </td>
                       </tr>
                     </tbody>
                   </table>
