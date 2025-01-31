@@ -1,0 +1,52 @@
+query getRaceDetails($raceId: BigInt!) {
+  racesCollection(filter: { id: { eq: $raceId } }) {
+    edges {
+      node {
+        name # "2000m Brandt Maiden Plate Maiden"
+        distance # 5000m
+        class # Maiden
+        start_time # For race time
+        track_condition # Soft 5
+        rail # "Out 5m Entire Circuit"
+        weather # For 21°C
+        prize_money # $37,500
+        competitor_count
+        status # For Final Results status
+        top_4_numbers # For the 8,2,3 positions shown
+        tracks {
+          name # Sportsbet-Ballarat
+          state
+          surface
+        }
+
+        # To get competitors/runners
+        competitors: competitorsCollection(
+          orderBy: { competitor_number: AscNullsFirst }
+        ) {
+          edges {
+            node {
+              competitor_number
+              barrier
+              final_position
+              weight_total
+              scratching_type
+              failed_to_finish
+              failed_to_finish_reason
+              margin
+
+              # Get associated horse
+              horses {
+                name
+                age
+                sex
+              }
+
+              # Get sectional times if available
+              elapsed_time_ms # For the "52m 15s" sectionals shown
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  CloudSnowIcon,
-  ThermometerIcon,
-  WindIcon,
-} from "lucide-react";
+import { CloudSnowIcon, ThermometerIcon, WindIcon } from "lucide-react";
 import { TrackIcon } from "./components/TrackIcon";
 import { StatsTable } from "./components/StatsTable";
 import { BlackbookCard } from "@/components/BlackbookCard";
@@ -37,6 +33,91 @@ import Odds from "./components/Odds";
 import RunnerCompare from "./components/RunnerCompare";
 import Market from "./components/Market";
 import { TipTracker } from "./components/TipTracker";
+import { fetchRaceDetails } from "@/graphql/fetchRacedetails";
+import React, { useEffect, useState } from "react";
+import { getPunterDayJS } from "@/utils/dateUtils";
+import { GetFormGuideOverviewDocument } from "@/gql/graphql";
+import { useClientSupabaseQuery } from "@/hooks/useClientSupabaseQuery";
+import { TripleDotsLoading } from "@/components/ui/TripleDotsLoading";
+import { Calendar } from "@/components/ui/calendar";
+import dayjs from "dayjs";
+
+interface OddsNode {
+  source: string;
+  win_fixed: number;
+  place_fixed: number;
+  competitor_number: string;
+}
+
+interface RaceNode {
+  id: string;
+  name: string;
+  status: string;
+  start_time: string;
+  race_number: string;
+  top_4_numbers: any; // Replace with correct type if known
+  oddsCollection: {
+    edges: { node: OddsNode }[];
+  };
+  competitorsCollection: {
+    edges: any[]; // Replace with correct type if known
+  };
+}
+
+interface RacesCollection {
+  edges: { node: RaceNode }[];
+}
+
+interface CompetitorNode {
+  node: {
+    horses: {
+      age: number;
+      sex: string;
+      name: string;
+    };
+    margin: number;
+    barrier: number;
+    weight_total: number;
+    final_position: any; // Adjust type as needed
+    elapsed_time_ms: any; // Adjust type as needed
+    scratching_type: string;
+    failed_to_finish: boolean;
+    competitor_number: number;
+    failed_to_finish_reason: string;
+  };
+}
+
+interface RaceDetailNode {
+  name: string;
+  rail: string;
+  class: string;
+  status: string;
+  tracks: {
+    name: string;
+    state: string;
+    surface: string;
+  };
+  weather: string;
+  distance: number;
+  start_time: string;
+  competitors: {
+    edges: CompetitorNode[];
+  };
+  prize_money: string;
+  top_4_numbers: any; // Adjust type as needed
+  track_condition: string;
+  competitor_count: number;
+}
+
+interface RacesCollectionEdges {
+  node: RaceDetailNode;
+}
+
+interface RaceDetail {
+  racesCollection: {
+    edges: RacesCollectionEdges[];
+  };
+}
 
 const Tab = ({ className, ...props }: TabsTriggerProps) => (
   <TabsTrigger
@@ -49,6 +130,91 @@ const Tab = ({ className, ...props }: TabsTriggerProps) => (
 );
 
 const FormOverviewDesktop = () => {
+  const [selectedDate, setSelectedDate] = useState(getPunterDayJS(new Date()));
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const [top4Competitors, setTop4Competitors] = useState([]);
+  const [racesCollection, setRacesCollection] = useState<RacesCollection>({
+    edges: [],
+  });
+  const [meeting, setMeeting] = useState("");
+  const [raceDetail, setRaceDetail] = useState<RaceDetail>();
+
+  const toggleCalendarVisibility = () => {
+    setIsCalendarVisible(!isCalendarVisible);
+  };
+
+  const handleDateSelect = (date: Date) => {
+    const previousDay = dayjs(date).subtract(1, 'day').toDate();
+    setSelectedDate(getPunterDayJS(previousDay));
+    setIsCalendarVisible(false); // Hide calendar after selecting a date
+  };
+
+
+  const { data, isFetching, refetch } = useClientSupabaseQuery(
+    ["formGuideOverview"],
+    GetFormGuideOverviewDocument,
+    {
+      startDate: selectedDate.startOf("d").toDate(),
+      endDate: selectedDate.endOf("d").toDate(),
+    }
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, selectedDate]);
+
+  useEffect(() => {
+    if (data?.meetingsCollection.edges.length > 0) {
+      const firstMeeting = `${data.meetingsCollection.edges[0].node.tracks.name}-${data.meetingsCollection.edges[0].node.tracks.state}`;
+      const checkMetting = data.meetingsCollection.edges.find(
+        (item) =>
+          `${item.node.tracks.name}-${item.node.tracks.state}` === meeting
+      );
+      if (!meeting || !checkMetting) {
+        setMeeting(firstMeeting);
+      }
+      const selectedMeeting = data.meetingsCollection.edges.find(
+        (item) =>
+          `${item.node.tracks.name}-${item.node.tracks.state}` ===
+          (meeting || firstMeeting)
+      );
+      if (selectedMeeting) {
+        const formattedRaces = selectedMeeting.node.racesCollection || { edges: [] };
+        setRacesCollection(formattedRaces);
+
+        if (formattedRaces.edges.length > 0) {
+          getRaceDetails(Number(formattedRaces.edges[0].node.id));
+        }
+      }
+    }
+  }, [data, meeting]);
+
+  const getRaceDetails = async (raceID: number) => {
+    const raceDetails = await fetchRaceDetails(raceID);
+    
+    // Format Race Details here if needed before setting state
+    setRaceDetail(raceDetails as RaceDetail);
+  };
+
+  useEffect(() => {
+    if(raceDetail) {
+      const topNumber  = raceDetail?.racesCollection.edges[0]?.node.top_4_numbers || [];
+      const competitors = raceDetail?.racesCollection.edges[0].node.competitors.edges;
+      const topCompetitorDetails = competitors.filter(competitor =>
+        topNumber.includes(competitor.node.competitor_number)
+      ).sort((a, b) =>
+        topNumber.indexOf(a.node.competitor_number) - topNumber.indexOf(b.node.competitor_number)
+      );
+      setTop4Competitors(topCompetitorDetails);
+    }
+  },[raceDetail])
+  if (isFetching || !data) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <TripleDotsLoading />
+      </div>
+    );
+  }
   return (
     <>
       <Wrapper>
@@ -58,7 +224,20 @@ const FormOverviewDesktop = () => {
           <div className="flex flex-wrap items-end justify-between lg:flex-nowrap">
             <div>
               <div className="mt-5">
-                <Select value="sportsbet-ballarat">
+                <Select
+                  value={meeting}
+                  onValueChange={(value) => {
+                    setMeeting(value);
+                    const selectedMeeting = data.meetingsCollection.edges.find(
+                      (item) =>
+                        `${item.node.tracks.name}-${item.node.tracks.state}` ===
+                        value,
+                    );
+                    if (selectedMeeting) {
+                      setRacesCollection(selectedMeeting.node.racesCollection);
+                    }
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue className="app-text-h2" />
 
@@ -68,14 +247,21 @@ const FormOverviewDesktop = () => {
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem value="sportsbet-ballarat">
-                      Sportsbet-Ballarat
-                    </SelectItem>
+                    {data.meetingsCollection.edges.map((item, index) => {
+                      return (
+                        <SelectItem
+                          key={index}
+                          value={`${item.node.tracks.name}-${item.node.tracks.state}`}
+                        >
+                          {item.node.tracks.name}-{item.node.tracks.state}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
               <h2 className="mt-1 text-Sub_Dark_color app-text-small-caption">
-                2000m Brandt Maiden Plate Maiden
+                {raceDetail?.racesCollection.edges[0]?.node.name}
               </h2>
             </div>
 
@@ -84,14 +270,14 @@ const FormOverviewDesktop = () => {
                 <TrackIcon />
 
                 <strong className="ml-2 align-middle lg:app-text-h4">
-                  5000m
+                  {raceDetail?.racesCollection.edges[0]?.node.distance}m
                 </strong>
               </div>
 
               <div className="flex items-center border-r px-2 lg:px-5">
                 <CloudSnowIcon className="inline" />
                 <strong className="ml-2 align-middle lg:app-text-h4">
-                  21°C
+                  {raceDetail?.racesCollection.edges[0]?.node.weather}
                 </strong>
               </div>
 
@@ -100,18 +286,31 @@ const FormOverviewDesktop = () => {
                 <WindIcon className="inline" />
 
                 <strong className="ml-2 align-middle lg:app-text-h4">
-                  Soft 5
+                  {raceDetail?.racesCollection.edges[0]?.node.track_condition}
                 </strong>
               </div>
 
               <div className="text-Font_SubColor_1 app-text-small-caption lg:px-5">
                 <span className="text-mainFont">Track Rail</span> <br />
-                Out 5m Entire <br />
-                Circuit
+                {raceDetail?.racesCollection.edges[0]?.node.rail}
               </div>
-
-              <div className="mb-2 inline-block max-w-[89px] rounded bg-SubDark_Color_3 px-4 py-1.5 font-helveticaNowDisplay text-[15px] font-bold text-Sub_Dark_color">
-                Final Results
+              <div className="relative">
+                <div
+                  onClick={toggleCalendarVisibility}
+                  className="mb-2 inline-block max-w-[89px] rounded bg-SubDark_Color_3 px-4 py-1.5 font-helveticaNowDisplay text-[15px] font-bold text-Sub_Dark_color"
+                >
+                  Final Results
+                </div>
+                {isCalendarVisible && (
+                  <div className="relative z-10">
+                    <div
+                      className="absolute left-0 mt-1 rounded bg-gray-200 p-2 shadow-lg"
+                      style={{ minWidth: "250px" }} // Adjust width as needed
+                    >
+                      <Calendar onDayClick={handleDateSelect} />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -119,18 +318,18 @@ const FormOverviewDesktop = () => {
       </Wrapper>
 
       <div className="mt-5 border-y">
-      <Wrapper className="flex items-center overflow-auto px-0">
+        <Wrapper className="flex items-center overflow-auto px-0">
           <RacePagination className="items-center text-[20px] font-[800]">
             All
           </RacePagination>
-          <RacePagination raceNumber="1" results={[8, 2, 3]} />
-          <RacePagination raceNumber="2" results={[8, 2, 3]} />
-          <RacePagination raceNumber="3" timeUntilRace="52m 15s" active />
-          <RacePagination raceNumber="4" timeUntilRace="52m 15s" />
-          <RacePagination raceNumber="5" timeUntilRace="52m 15s" />
-          <RacePagination raceNumber="6" timeUntilRace="52m 15s" />
-          <RacePagination raceNumber="7" timeUntilRace="52m 15s" />
-          <RacePagination raceNumber="8" timeUntilRace="52m 15s" />
+          {racesCollection.edges.map((race, index) => (
+            <div
+              key={index}
+              onClick={() => getRaceDetails(Number(race.node.id))}
+            >
+              <RacePagination raceNumber={race.node.race_number} />
+            </div>
+          ))}
         </Wrapper>
       </div>
 
@@ -147,8 +346,7 @@ const FormOverviewDesktop = () => {
 
             <SelectContent>
               <SelectItem value="default">
-                Set Weights. Three-Years-Old and Upwards, No sex restriction.
-                Maiden. Apprentices can claim. Track name: Outer...
+                Set Weights. {raceDetail?.racesCollection.edges[0]?.node.class}
               </SelectItem>
               <SelectItem value="item2">Item 2</SelectItem>
             </SelectContent>
@@ -164,7 +362,16 @@ const FormOverviewDesktop = () => {
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value="default">Race Time: 2:06.49</SelectItem>
+              <SelectItem value="default">
+                Race Time:{" "}
+                {new Date(
+                  raceDetail?.racesCollection.edges[0]?.node.start_time,
+                ).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })}
+              </SelectItem>
               <SelectItem value="item2">Item 2</SelectItem>
             </SelectContent>
           </Select>
@@ -179,22 +386,10 @@ const FormOverviewDesktop = () => {
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value="default">Track Record: 2:06:49</SelectItem>
-              <SelectItem value="item2">Item 2</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value="default">
-            <SelectTrigger className="w-auto text-xs text-Sub_Dark_color">
-              <SelectValue />
-
-              <SelectIcon className="pl-1">
-                <FaCaretDown></FaCaretDown>
-              </SelectIcon>
-            </SelectTrigger>
-
-            <SelectContent>
-              <SelectItem value="default">Prize Money: $37,500</SelectItem>
+              <SelectItem value="default">
+                Prize Money: $
+                {raceDetail?.racesCollection.edges[0]?.node.prize_money}
+              </SelectItem>
               <SelectItem value="item2">Item 2</SelectItem>
             </SelectContent>
           </Select>
@@ -202,8 +397,8 @@ const FormOverviewDesktop = () => {
       </div>
 
       <Wrapper>
-      <div className="mt-8">
-          {new Array(4).fill(null).map((_, index) => (
+        <div className="mt-8">
+          {top4Competitors.map((competitor, index) => (
             <div
               key={index}
               className="mt-2 flex flex-wrap justify-between rounded-xl bg-white app-text-caption"
@@ -234,10 +429,10 @@ const FormOverviewDesktop = () => {
                   <img alt="" src="/img/icons/t-shirt-orange.svg" width={43} />
                   <div className="-mt-0.5">
                     <strong className="app-text-h4">
-                      8. Barney’s Blaze - 3
+                      {competitor?.node.competitor_number}. Barney’s Blaze - {competitor?.node.barrier}
                     </strong>
                     <p className="text-Font_SubColor_1 app-text-caption">
-                      5yoG (b) Rubick x Harvest Queen
+                      {competitor?.node.horses.age}yoG (b) Rubick x Harvest Queen
                     </p>
                   </div>
                 </div>
@@ -254,12 +449,12 @@ const FormOverviewDesktop = () => {
                       <tr>
                         <td className="pr-3">Jockey</td>
                         <td className="text-Font_SubColor_1">
-                          Emily Pozman (a4)
+                          {competitor?.node.horses.name} (a4)
                         </td>
                       </tr>
                       <tr>
                         <td className="pr-3">Weight</td>
-                        <td className="text-Font_SubColor_1">58kg</td>
+                        <td className="text-Font_SubColor_1">{competitor?.node.weight_total}kg</td>
                       </tr>
                     </tbody>
                   </table>
@@ -268,7 +463,7 @@ const FormOverviewDesktop = () => {
                 <Chip
                   className="ml-4 self-center py-2"
                   text1="Margin"
-                  text2="1:10L"
+                  text2={competitor?.node.margin + "L"}
                 />
               </div>
 

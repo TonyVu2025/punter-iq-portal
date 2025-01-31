@@ -1,0 +1,3 @@
+mutation GetHorseData($horseId: String!) {
+  get_horse_data(param_horse_id: $horseId)
+}

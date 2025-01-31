@@ -33,7 +33,6 @@ const FormGuideDesktop = () => {
       endDate: queryDate.endOf("d").toDate(),
     },
   );
-
   const dayMeetings = useMemo(() => {
     if (!data) return [];
 

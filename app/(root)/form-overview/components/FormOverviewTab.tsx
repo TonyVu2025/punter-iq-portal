@@ -10,7 +10,6 @@ import {
 import { useState } from "react";
 import { Chip } from "./Chip";
 import { FullResultDialog } from "./FullResultDialog";
-import { RankIcon } from "./RankIcon";
 import styles from "./HorseRaceCard.module.scss";
 import { Button } from "@/components/ui/button";
 import {
@@ -69,10 +68,10 @@ export const FormOverviewTab = () => {
                 <th className="whitespace-nowrap">Gear Chg</th>
                 <th>RTG</th>
                 <th className="!bg-SubDark_Color_3 !text-center !text-xs">
-                  Jockey Score
+                  Class Up/Down
                 </th>
                 <th className="!bg-SubDark_Color_3 !text-center !text-xs">
-                  Jockey Course
+                  Weight Up/Down
                 </th>
                 <th className="!bg-SubDark_Color_3 !text-center !text-xs">
                   Trainer Score
@@ -132,9 +131,28 @@ const OverviewAccordionItem = ({
             {index === 0 ? <RaceTableRankingIcons /> : index + 1}
           </td>
           <td className="min-w-[160px]">
-            <div className="flex">
-              <RankIcon rank={index + 1} />
-
+            <div className="flex items-center">
+              <div
+                className="flex h-[26px] w-[26px] items-center justify-center rounded-2xl text-[10px] leading-[26px] text-white"
+                style={{
+                  backgroundColor:
+                    index === 0
+                      ? "#F37023"
+                      : index === 1
+                        ? "#0091CD"
+                        : index === 2
+                          ? "#F5A06E"
+                          : "#AAB6BF",
+                }}
+              >
+                {index === 0
+                  ? "1st"
+                  : index === 1
+                    ? "2nd"
+                    : index === 2
+                      ? "3rd"
+                      : `${index + 1 + "th"}`}
+              </div>
               <div className="ml-2">
                 <span
                   className={twMerge(
@@ -179,16 +197,28 @@ const OverviewAccordionItem = ({
           <td>68</td>
 
           <td className="bg-Subtle_dark_2 text-center text-sm">
-            81 <br />
-            <StarRating
-              inactiveClassname={
-                scratched && "stroke-Font_SubColor_1 fill-transparent"
-              }
-              activeClassname={
-                scratched && "fill-Font_SubColor_1 stroke-Font_SubColor_1"
-              }
-              stars={4}
-            />
+            <div className="flex justify-center items-center">
+              <svg
+                width="14"
+                height="25"
+                viewBox="0 0 14 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M0.845391 7.02929C1.19524 7.37913 1.76245 7.37913 2.11229 7.02929L6.85384 2.28774L11.5954 7.02929C11.9452 7.37913 12.5124 7.37913 12.8623 7.02929C13.2121 6.67944 13.2121 6.11223 12.8623 5.76239L7.48729 0.387391C7.13745 0.0375466 6.57023 0.0375466 6.22039 0.387391L0.845391 5.76239C0.495547 6.11223 0.495547 6.67944 0.845391 7.02929Z"
+                  fill="#3A0CA3"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M0.845391 14.9707C1.19524 14.6209 1.76245 14.6209 2.11229 14.9707L6.85384 19.7123L11.5954 14.9707C11.9452 14.6209 12.5124 14.6209 12.8623 14.9707C13.2121 15.3206 13.2121 15.8878 12.8623 16.2376L7.48729 21.6126C7.13745 21.9625 6.57023 21.9625 6.22039 21.6126L0.845391 16.2376C0.495547 15.8878 0.495547 15.3206 0.845391 14.9707Z"
+                  fill="#AAB6BF"
+                />
+              </svg>
+            </div>
           </td>
 
           <td className="bg-Subtle_dark_2 text-center text-sm">
