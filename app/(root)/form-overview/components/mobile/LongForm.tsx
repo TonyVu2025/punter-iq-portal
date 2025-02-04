@@ -27,25 +27,26 @@ const LastStartItem = ({ position = 1 }) => {
         value="details"
         className={twMerge(styles.accordionItem, position === 1 && "font-bold")}
       >
-        <div className="flex items-center justify-between space-x-1 pl-2 text-xs text-Sub_Dark_color">
+        <div className="flex items-center justify-between gap-2 pl-2 text-xs text-Sub_Dark_color">
           <span className="min-w-[50px]">05/08/24</span>
           <span className="min-w-[50px]">HAWK*</span>
           <span className="min-w-[50px]">Good</span>
           <span className="min-w-[50px]">800</span>
           <span
             className={twMerge(
-              "min-w-12 rounded-full px-1 py-0.5 text-left",
+              "min-w-12 rounded-full px-1 py-0.5 text-center",
               position === 1 && "bg-action2 text-center",
             )}
           >
             {getOrdinalNum(position)}/8
           </span>
-
-          <AccordionTrigger
-            value="what"
-            className="p-0"
-            iconComponent={<ChevronDown className={styles.accordionIcon} />}
-          ></AccordionTrigger>
+          <span>
+            <AccordionTrigger
+              value="what"
+              className="p-0"
+              iconComponent={<ChevronDown className={styles.accordionIcon} />}
+            ></AccordionTrigger>
+          </span>
         </div>
 
         <AccordionContent>
@@ -53,29 +54,29 @@ const LastStartItem = ({ position = 1 }) => {
             <div className="flex justify-between">
               <div className="basis-[140px]">
                 <div className="flex justify-between space-x-5">
-                  <b>Margin:</b>
+                  <b className="text-[12px] font-[700]">Margin:</b>
 
-                  <span className="text-right">4.8L</span>
+                  <span className="text-right text-[12px] font-[400]">4.8L</span>
                 </div>
 
                 <div className="flex justify-between space-x-5">
-                  <b>Jockey:</b>
+                  <b className="text-[12px] font-[700]">Jockey:</b>
 
-                  <span className="text-right">J R Collett</span>
+                  <span className="text-right text-[12px] font-[400]">J R Collett</span>
                 </div>
               </div>
 
               <div className="basis-[150px]">
                 <div className="flex justify-between space-x-5">
-                  <b>Class:</b>
+                  <b className="text-[12px] font-[700]">Class:</b>
 
-                  <span className="text-right">Mdn</span>
+                  <span className="text-right text-[12px] font-[400]">Mdn</span>
                 </div>
 
                 <div className="flex justify-between space-x-5">
-                  <b>Time:</b>
+                  <b className="text-[12px] font-[700]">Time:</b>
 
-                  <span className="text-right">00.56.63</span>
+                  <span className="text-right text-[12px] font-[400]">00.56.63</span>
                 </div>
               </div>
             </div>
@@ -83,29 +84,29 @@ const LastStartItem = ({ position = 1 }) => {
             <div className="flex justify-between">
               <div className="basis-[140px]">
                 <div className="flex justify-between space-x-5">
-                  <b>Weight:</b>
+                  <b className="text-[12px] font-[700]">Weight:</b>
 
-                  <span className="text-right">56.5kg</span>
+                  <span className="text-right text-[12px] font-[400]">56.5kg</span>
                 </div>
 
                 <div className="flex justify-between space-x-5">
-                  <b>Barrier:</b>
+                  <b className="text-[12px] font-[700]">Barrier:</b>
 
-                  <span className="text-right">7</span>
+                  <span className="text-right text-[12px] font-[400]">7</span>
                 </div>
               </div>
 
               <div className="basis-[150px]">
                 <div className="flex justify-between space-x-5">
-                  <b>Last 600m:</b>
+                  <b className="text-[12px] font-[700]">Last 600m:</b>
 
-                  <span className="text-right">00.33.61</span>
+                  <span className="text-right text-[12px] font-[400]">00.33.61</span>
                 </div>
 
                 <div className="flex justify-between space-x-5">
-                  <b>SP:</b>
+                  <b className="text-[12px] font-[700]">SP:</b>
 
-                  <span className="text-right">$13.00</span>
+                  <span className="text-right text-[12px] font-[400]">$13.00</span>
                 </div>
               </div>
             </div>
@@ -116,24 +117,24 @@ const LastStartItem = ({ position = 1 }) => {
 
             <div className="flex justify-between border-y px-2 py-2">
               <div className="border-r border-[#DAD8D8] pr-2 text-2xs text-Sub_Dark_color last:border-none">
-                <b className="text-[13px] text-mainFont">55</b>
-                <span className="block leading-tight text-Sub_Dark_color">
+                <b className="text-[13px] text-mainFont font-[700]">55</b>
+                <span className="block leading-tight text-[#657786] text-[10px] font-[400]">
                   Blocked <br />
                   for run
                 </span>
               </div>
 
-              <div className="border-r border-[#DAD8D8] pr-2 text-2xs text-Sub_Dark_color last:border-none">
-                <b className="text-[13px] text-mainFont">4th/2nd</b>
-                <span className="block leading-tight text-Sub_Dark_color">
+              <div className="border-r border-[#DAD8D8] pr-2 text-2xs text-[#657786] last:border-none">
+                <b className="text-[13px] text-mainFont font-[700]">4th/2nd</b>
+                <span className="block leading-tight text-[#657786] text-[10px] font-[400]">
                   Come from <br />
                   back
                 </span>
               </div>
 
               <div className="border-[#DAD8D8] pr-2 text-2xs">
-                <b className="text-[13px] text-mainFont">33.30</b>
-                <span className="block leading-tight text-Sub_Dark_color">
+                <b className="text-[13px] text-mainFont font-[700]">33.30</b>
+                <span className="block leading-tight text-[#657786] text-[10px] font-[400]">
                   Went back <br />
                   from barrier
                 </span>
@@ -142,7 +143,7 @@ const LastStartItem = ({ position = 1 }) => {
               <div className="pt-2">
                 <Dialog>
                   <DialogTrigger>
-                    <Button variant="purple" size="sm">
+                    <Button variant="purple" size="sm" className="text-[13px] font-[700]">
                       Comment
                     </Button>
                   </DialogTrigger>

@@ -31,6 +31,9 @@ query getRaceDetails($raceId: BigInt!) {
               weight_total
               scratching_type
               failed_to_finish
+              trainers {
+                full_name
+              }
               failed_to_finish_reason
               margin
 
@@ -39,6 +42,8 @@ query getRaceDetails($raceId: BigInt!) {
                 name
                 age
                 sex
+                sire
+                dam
               }
 
               # Get sectional times if available

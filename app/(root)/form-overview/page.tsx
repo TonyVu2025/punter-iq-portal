@@ -40,6 +40,7 @@ import { GetFormGuideOverviewDocument } from "@/gql/graphql";
 import { useClientSupabaseQuery } from "@/hooks/useClientSupabaseQuery";
 import { TripleDotsLoading } from "@/components/ui/TripleDotsLoading";
 import { Calendar } from "@/components/ui/calendar";
+import SpeedMap from "./components/SpeedMap";
 
 interface OddsNode {
   source: string;
@@ -73,6 +74,11 @@ interface CompetitorNode {
       age: number;
       sex: string;
       name: string;
+      sire: string;
+      dam: string;
+    };
+    trainers: {
+      full_name: string;
     };
     margin: number;
     barrier: number;
@@ -143,9 +149,8 @@ const FormOverviewDesktop = () => {
   };
 
   const handleDateSelect = (date: Date) => {
-    // const previousDay = dayjs(date).subtract(1, "day").toDate();
     setSelectedDate(getPunterDayJS(date));
-    setIsCalendarVisible(false); // Hide calendar after selecting a date
+    setIsCalendarVisible(false);
   };
 
   const { data, isFetching, refetch } = useClientSupabaseQuery(
@@ -333,7 +338,10 @@ const FormOverviewDesktop = () => {
               key={index}
               onClick={() => getRaceDetails(Number(race.node.id))}
             >
-              <RacePagination results={race.node.top_4_numbers?.slice(0,3)} raceNumber={race.node.race_number} />
+              <RacePagination
+                results={race.node.top_4_numbers?.slice(0, 3)}
+                raceNumber={race.node.race_number}
+              />
             </div>
           ))}
         </Wrapper>
@@ -438,12 +446,14 @@ const FormOverviewDesktop = () => {
                   <img alt="" src="/img/icons/t-shirt-orange.svg" width={43} />
                   <div className="-mt-0.5">
                     <strong className="app-text-h4">
-                      {competitor?.node.competitor_number}. Barney’s Blaze -{" "}
+                      {competitor?.node.competitor_number}.{" "}
+                      {competitor?.node.trainers.full_name} -{" "}
                       {competitor?.node.barrier}
                     </strong>
                     <p className="text-Font_SubColor_1 app-text-caption">
-                      {competitor?.node.horses.age}yoG (b) Rubick x Harvest
-                      Queen
+                      {competitor?.node.horses.age}yoG (b){" "}
+                      {competitor?.node.horses.sire} x{" "}
+                      {competitor?.node.horses.dam}
                     </p>
                   </div>
                 </div>
@@ -454,7 +464,7 @@ const FormOverviewDesktop = () => {
                       <tr>
                         <td className="pr-3">Trainer</td>
                         <td className="text-Font_SubColor_1">
-                          Frankie Stockdale
+                          {competitor?.node.trainers.full_name}
                         </td>
                       </tr>
                       <tr>
@@ -701,11 +711,24 @@ const FormOverviewDesktop = () => {
         <TabsContent asChild value="overview">
           <Wrapper className="mt-14">
             <FormOverviewTab />
+            <LastStartComments />
+
+            <div className="rounded-lg bg-white lg:mt-14 lg:p-10">
+              <h2 className="font-bold app-text-h3">Help Guides</h2>
+
+              <div className="mt-7 grid lg:grid-cols-3 lg:gap-x-20 lg:gap-y-6">
+                <NewsCard />
+                <NewsCard />
+                <NewsCard />
+              </div>
+            </div>
+
+            <img alt="" src="/img/sample-ads-4.jpg" className="mt-12" />
           </Wrapper>
         </TabsContent>
 
         <TabsContent asChild value="Speed">
-          <Wrapper className="mt-14">{/* <FormOverviewTab /> */}</Wrapper>
+          <Wrapper className="mt-14"><SpeedMap /></Wrapper>
         </TabsContent>
 
         <TabsContent value="Head2Head">
@@ -725,6 +748,17 @@ const FormOverviewDesktop = () => {
         <TabsContent value="Runner">
           <Wrapper className="mt-14">
             <RunnerCompare />
+            <div className="rounded-lg bg-white lg:mt-14 lg:p-10">
+              <h2 className="font-bold app-text-h3">Help Guides</h2>
+
+              <div className="mt-7 grid lg:grid-cols-3 lg:gap-x-20 lg:gap-y-6">
+                <NewsCard />
+                <NewsCard />
+                <NewsCard />
+              </div>
+            </div>
+
+            <img alt="" src="/img/sample-ads-4.jpg" className="mt-12" />
           </Wrapper>
         </TabsContent>
 
@@ -737,6 +771,17 @@ const FormOverviewDesktop = () => {
         <TabsContent value="Tiptracker">
           <Wrapper className="mt-14">
             <TipTracker />
+            <div className="rounded-lg bg-white lg:mt-14 lg:p-10">
+              <h2 className="font-bold app-text-h3">Help Guides</h2>
+
+              <div className="mt-7 grid lg:grid-cols-3 lg:gap-x-20 lg:gap-y-6">
+                <NewsCard />
+                <NewsCard />
+                <NewsCard />
+              </div>
+            </div>
+
+            <img alt="" src="/img/sample-ads-4.jpg" className="mt-12" />
           </Wrapper>
         </TabsContent>
 
@@ -744,22 +789,6 @@ const FormOverviewDesktop = () => {
           Full Form
         </TabsContent>
       </Tabs>
-
-      <Wrapper>
-        <LastStartComments />
-
-        <div className="rounded-lg bg-white lg:mt-14 lg:p-10">
-          <h2 className="font-bold app-text-h3">Help Guides</h2>
-
-          <div className="mt-7 grid lg:grid-cols-3 lg:gap-x-20 lg:gap-y-6">
-            <NewsCard />
-            <NewsCard />
-            <NewsCard />
-          </div>
-        </div>
-
-        <img alt="" src="/img/sample-ads-4.jpg" className="mt-12" />
-      </Wrapper>
 
       <FooterCta className="mt-[100px]" />
     </>

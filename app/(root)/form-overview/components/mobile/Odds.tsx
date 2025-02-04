@@ -5,8 +5,12 @@ import Image from "next/image";
 
 const RaceCard = ({ horse }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [activeCard, setActiveCard] = useState(null);
   const toggleExpandCollapse = () => {
     setIsExpanded(!isExpanded);
+  };
+  const handleCardClick = (index) => {
+    setActiveCard(index);
   };
 
   return (
@@ -83,7 +87,11 @@ const RaceCard = ({ horse }) => {
       {isExpanded ? (
         <div className="mt-2 grid grid-cols-4 gap-4 bg-[#EDF1F4]">
           {horse.odds.map((odd, index) => (
-            <div key={index} className="group flex flex-col items-center">
+            <div
+              key={index}
+              className="group flex flex-col items-center"
+              onClick={() => handleCardClick(index)}
+            >
               <div className="flex transform flex-col items-center rounded-lg p-2 transition duration-200 hover:scale-105 hover:border-purple-500">
                 <img
                   src={odd.bookmakerLogo}
@@ -95,9 +103,11 @@ const RaceCard = ({ horse }) => {
                   ${odd.price}
                 </span>
               </div>
-              {/* <span className="text-sm text-purple-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-              Best Odds
-            </span> */}
+              {activeCard === index && (
+                <div className="rounded-sm bg-[#FFC20E] px-5 py-1 text-[10px] font-[600] text-[#283036]">
+                  Best
+                </div>
+              )}
             </div>
           ))}
         </div>

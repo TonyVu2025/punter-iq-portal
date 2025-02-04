@@ -205,24 +205,26 @@ export function HorseStats({ horses }: HorseStatsProps) {
                   </span>
                 </div>
 
-                <div className="flex min-w-24 items-center gap-10 text-xs">
-                  <div className="h-[52px] w-[63px] border-r-2 text-center">
-                    <div>{horse.blockedForRun}</div>
-                    <div className="text-[10px] text-gray-500">
-                      Blocked for run
-                    </div>
+                <div className="flex items-center text-xs">
+                  <div className="h-[52px] border-r-2">
+                    <p className="text-[13px] font-[700]">
+                      {horse.blockedForRun}
+                    </p>
+                    <p className="text-[10px] text-gray-500">Blocked for run</p>
                   </div>
-                  <div className="h-[52px] w-[63px] border-r-2 text-center">
-                    <div>{horse.comeFromback}</div>
-                    <div className="text-[10px] text-gray-500">
-                      Come from back
-                    </div>
+                  <div className="h-[52px] pl-1 sm:pl-2 border-r-2">
+                    <p className="text-[13px] font-[700]">
+                      {horse.comeFromback}
+                    </p>
+                    <p className="text-[10px] text-gray-500">Come from back</p>
                   </div>
-                  <div className="h-[52px] w-[63px] text-center">
-                    <div>{horse.wentBackFromBarrier}</div>
-                    <div className="text-[10px] text-gray-500">
+                  <div className="h-[52px] pl-1 sm:pl-2">
+                    <p className="text-[13px] font-[700]">
+                      {horse.wentBackFromBarrier}
+                    </p>
+                    <p className="text-[10px] text-gray-500">
                       Went back from barrier
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -266,8 +268,8 @@ export function HorseStats({ horses }: HorseStatsProps) {
                       </div>
                       <div>{horse.win.toFixed(2)}</div>
                     </div>
-                    <div className="h-[18px] rounded-b-lg bg-orange-500 text-[10px] text-white">
-                      Favourite
+                    <div className="h-[18px] rounded-b-lg bg-[#FFC20E] text-[10px] text-white">
+                      Favorite
                     </div>
                   </div>
                   <div className="flex w-[56px] flex-col justify-center rounded-lg bg-[#F3F6F8]">

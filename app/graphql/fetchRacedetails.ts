@@ -35,10 +35,15 @@ const GET_RACE_DETAILS = gql`
                 failed_to_finish
                 failed_to_finish_reason
                 margin
+                trainers {
+                  full_name
+                }
                 horses {
                   name
                   age
                   sex
+                  sire
+                  dam
                 }
                 elapsed_time_ms
               }

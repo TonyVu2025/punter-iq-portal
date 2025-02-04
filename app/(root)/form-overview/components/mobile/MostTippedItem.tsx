@@ -55,7 +55,26 @@ export const MostTippedItem = ({
 
               <div className="pl-3">
                 <div className="flex items-center space-x-1 font-bold">
-                  <BIcon className="rounded bg-mainFont px-2 py-2 text-white" />
+                  <svg
+                    width="25"
+                    height="24"
+                    viewBox="0 0 25 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="0.590332"
+                      y="-0.00634766"
+                      width="24"
+                      height="23.4364"
+                      rx="3.60912"
+                      fill="#283036"
+                    />
+                    <path
+                      d="M11.4847 16.7102V6.71387H13.6809V16.7102H11.4847ZM8.57666 8.54653V6.71387H16.604V8.54653H8.57666Z"
+                      fill="white"
+                    />
+                  </svg>
                   <BIcon className="rounded bg-mainFont px-2 py-2 text-white" />
                   <span className="text-xs font-normal">
                     1. Kyokushin (5){" "}
@@ -221,7 +240,7 @@ export const MostTippedItem = ({
                   </TabsTrigger>
 
                   <TabsTrigger asChild value="long">
-                    <Button className={styles.formTabTrigger}>Long</Button>
+                    <Button className={styles.formTabTrigger}>Long Form</Button>
                   </TabsTrigger>
 
                   <TabsTrigger asChild value="head2head">

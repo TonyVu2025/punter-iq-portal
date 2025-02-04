@@ -9,7 +9,7 @@ import { ChevronDown } from "lucide-react";
 import { FaArrowUp } from "react-icons/fa6";
 import { RaceResultSummaryCard } from "./RaceResultSummaryCard";
 
-const Head2HeadItem = () => {
+const Head2HeadItem = ({index}) => {
   return (
     <Accordion collapsible type="single" className={styles.root}>
       <AccordionItem value="details" className={styles.accordionItem}>
@@ -20,15 +20,15 @@ const Head2HeadItem = () => {
               <ChevronDown size={16} className={styles.accordionIcon} />
             }
           >
-            <div className="flex items-center space-x-1">
-              <strong className="h-[26px] w-[26px] flex-none rounded-full bg-action1 leading-[26px] text-white">
-                1st
+            <div className="flex items-start space-x-1">
+              <strong className={`h-[26px] w-[26px] flex-none rounded-full ${index == 1 ? 'bg-action1' : 'bg-[#AAB6BF]'} leading-[26px] text-white`}>
+                {index == 1 ? "1st" : index == 2 ? "2nd" : "3nd"}
               </strong>
 
-              <div className="pl-2 text-left">
+              <div className="pl-2 text-left text-[14px] font-[700]">
                 <strong>3. Zougo Boss (9)</strong>
 
-                <p className="mt-0.5 rounded-full bg-action2 px-2 py-0.5 text-Sub_Dark_color">
+                <p className="mt-0.5 rounded-full bg-action2 px-2 py-0.5 text-Sub_Dark_color text-[12px] font-[400]">
                   J: Joe Bowditch 58kg (a3)
                 </p>
               </div>
@@ -201,15 +201,15 @@ export const Head2Head = () => {
       </div>
 
       <div className="px-2">
-        <Head2HeadItem />
+        <Head2HeadItem index ={1} />
       </div>
 
       <div className="px-2">
-        <Head2HeadItem />
+        <Head2HeadItem index ={2} />
       </div>
 
       <div className="px-2">
-        <Head2HeadItem />
+        <Head2HeadItem index ={3} />
       </div>
 
       <div className="border-y py-1 text-center text-base font-bold">
@@ -217,15 +217,15 @@ export const Head2Head = () => {
       </div>
 
       <div className="px-2">
-        <Head2HeadItem />
+        <Head2HeadItem index ={1} />
       </div>
 
       <div className="px-2">
-        <Head2HeadItem />
+        <Head2HeadItem index ={2} />
       </div>
 
       <div className="px-2">
-        <Head2HeadItem />
+        <Head2HeadItem index ={3} />
       </div>
     </>
   );

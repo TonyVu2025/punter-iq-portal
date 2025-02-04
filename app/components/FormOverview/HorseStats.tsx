@@ -90,12 +90,12 @@ export function HorseStats({ horses }: HorseStatsProps) {
   };
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden bg-white pb-2 rounded-xl">
       <div className="grid grid-cols-1 divide-x divide-gray-200 lg:grid-cols-3">
         {/* Headers */}
         <div className="col-span-3 grid grid-cols-1 divide-x divide-white pt-6 lg:grid-cols-3">
           {horses.map((horse, index) => (
-            <div key={index} className="px-4 py-3">
+            <div key={index} className="px-4 py-3 bg-gray-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Image
@@ -156,18 +156,18 @@ export function HorseStats({ horses }: HorseStatsProps) {
               </div>
             </div>
             <div className="flex flex-row justify-center gap-10 border-t-2 pt-5 text-center">
-              <div className="flex w-[56px] flex-col rounded-lg border-2">
+              <div className="flex w-[56px] flex-col rounded-lg border-2 border-[#F3F6F8]">
                 <div className="text-[14px] text-[#AAB6BF]">Win</div>
                 <div className="text-[14px]">${horse.win.toFixed(2)}</div>
                 <div className="h-[18px] rounded-b-lg bg-orange-500 text-[10px] text-white">
-                  Favourite
+                  Favorite
                 </div>
               </div>
-              <div className="flex w-[56px] flex-col rounded-lg border-2">
+              <div className="flex w-[56px] flex-col rounded-lg border-2 border-[#F3F6F8]">
                 <div className="text-[14px] text-[#AAB6BF]">Place</div>
                 <div className="text-[14px]">${horse.place.toFixed(2)}</div>
                 <div className="h-[18px] rounded-b-lg bg-orange-500 text-[10px] text-white">
-                  Favourite
+                  Favorite
                 </div>
               </div>
             </div>
