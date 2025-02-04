@@ -72,7 +72,7 @@ function RaceDataCard({ index }) {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="py-4">
         <div className="flex items-start gap-2 text-gray-400">
           <svg
             width={48}
