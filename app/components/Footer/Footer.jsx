@@ -127,7 +127,7 @@ const Footer = () => {
                 src="/img/footerLogo.png"
                 className="mx-auto sm:mx-10"
                 alt="LastLeg Logo"
-                width={200}
+                width={220}
                 height={40}
               />
             </a>
@@ -169,18 +169,18 @@ const Footer = () => {
               >
                 gamblinghelponline.org.au
               </a>
-              . LastLeg® Sports is Licensed and regulated by the Northern
+              . BetIQ® Sports is Licensed and regulated by the Northern
               Territory Racing Commission. View our Rules, Terms and Conditions.
-              For South Australian residents, LastLeg® is fully compliant with
+              For South Australian residents, BetIQ® is fully compliant with
               the South Australian Gambling Codes of Practice. If you need any
               further assistance, please contact{" "}
-              <a href="mailto:support@LastLeg.com.au" className="underline">
-                support@LastLeg.com.au
+              <a href="mailto:support@BetIQ.com.au" className="underline">
+                support@BetIQ.com.au
               </a>
               .
             </p>
             <p className="text-sm mt-4">
-              © Lastleg® Sports Interactive Pty Ltd. 2023
+              © BetIQ® Sports Interactive Pty Ltd. 2023
             </p>
           </div>
         </div>

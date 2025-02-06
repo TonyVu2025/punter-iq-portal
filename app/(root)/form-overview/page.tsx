@@ -193,7 +193,6 @@ const FormOverviewDesktop = () => {
       }
     }
   }, [data, meeting]);
-
   const getRaceDetails = async (raceID: number) => {
     const raceDetails = await fetchRaceDetails(raceID);
 
@@ -230,7 +229,7 @@ const FormOverviewDesktop = () => {
     <>
       <Wrapper>
         <div>
-          <img src="/img/sample-ads-4.jpg" alt="" className="mx-auto mt-9" />
+        <img src="/img/sample-ads-4.jpg" alt="" className="mx-auto mt-9" />
 
           <div className="flex flex-wrap items-end justify-between lg:flex-nowrap">
             <div>
@@ -315,7 +314,7 @@ const FormOverviewDesktop = () => {
                 {isCalendarVisible && (
                   <div className="relative z-10">
                     <div
-                      className="absolute left-0 mt-1 rounded bg-gray-200 p-2 shadow-lg"
+                      className="absolute right-0 mt-1 rounded bg-gray-200 p-2 shadow-lg"
                       style={{ minWidth: "250px" }} // Adjust width as needed
                     >
                       <Calendar onDayClick={handleDateSelect} />

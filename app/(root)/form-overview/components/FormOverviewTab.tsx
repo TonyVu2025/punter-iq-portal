@@ -527,7 +527,7 @@ const OverviewAccordionItem = ({
               <div className="mt-[-1px] border-t border-Subtle_dark py-6 text-center">
                 <Button variant="muted" className="mx-auto max-w-[223px] px-8">
                   <EllipsisIcon className="mr-1.5" />
-                  Load More Data
+                  Display More Data
                 </Button>
               </div>
             </AccordionContent>
